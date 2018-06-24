@@ -1,0 +1,4 @@
+npm install
+after installing package:
+npm run build
+npm run start.
