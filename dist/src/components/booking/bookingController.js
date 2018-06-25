@@ -15,18 +15,18 @@ const bookingModel_1 = __importDefault(require("./bookingModel"));
 const hotelModel_1 = __importDefault(require("../hotel/hotelModel"));
 exports.booking = (req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log("body is====>", req.body);
-    let noRoom = parseInt(req.body.noOfRoom);
+    let noRoom = parseInt(req.body.noOFRoom);
     console.log("noof rommmmmm--type", noRoom, +"typeof Room No--->", typeof noRoom);
-    let hoteldata = yield hotelModel_1.default.find({ _id: req.body.hotelID }, { hotelName: 1 });
+    let hoteldata = yield hotelModel_1.default.findOne({ _id: req.body.hotelID }, { hotelName: 1 });
     console.log("hotellll Name---->", hoteldata, hoteldata.hotelName);
     try {
         const booking = new bookingModel_1.default({
-            HotelName: hoteldata[0].hotelName,
+            HotelName: hoteldata.hotelName,
             fromDate: req.body.fromDate,
             toDate: req.body.toDate,
             hotelID: req.body.hotelID,
             userID: req.body.userID,
-            noOfRoom: req.body.noOFRoom,
+            noOfRoom: noRoom,
             status: req.body.status,
             amount: req.body.amount
         });
@@ -39,22 +39,22 @@ exports.booking = (req, res) => __awaiter(this, void 0, void 0, function* () {
 });
 exports.draftBooking = (req, res) => __awaiter(this, void 0, void 0, function* () {
     console.log("body is====>", req.body);
-    let noRoom = parseInt(req.body.noOfRoom, 10);
+    let noRoom = parseInt(req.body.noOFRoom, 10);
     console.log("Romm rommmmmm-type-->", noRoom + "typeof Room No--->", typeof noRoom);
-    let hotelData = yield hotelModel_1.default.find({ _id: req.body.hotelID });
-    console.log("hotellll Name---->", hotelData, hotelData[0].hotelName, hotelData.charge);
+    let hotelData = yield hotelModel_1.default.findOne({ _id: req.body.hotelID });
+    console.log("hotellll Name---->", hotelData, hotelData.hotelName, hotelData.charge);
     console.log("date.........>", new Date(), typeof new Date());
     console.log("date.........>", Date.now(), typeof Date.now());
     try {
         // const res: any = hotelData[0].hotelName;
         // console.log("hotel name is", res);
         const cancelBooking = new bookingModel_1.default({
-            fromDate: req.body.fromDate,
-            toDate: req.body.toDate,
+            fromDate: req.body.fromDate ? req.body.fromDate : new Date(),
+            toDate: req.body.toDate ? req.body.toDate : new Date(),
             hotelID: req.body.hotelID,
-            HotelName: hotelData[0].hotelName,
+            HotelName: hotelData.hotelName,
             userID: req.body.userID,
-            noOfRoom: req.body.noOFRoom,
+            noOfRoom: noRoom,
             status: req.body.status,
             amount: req.body.amount
         });

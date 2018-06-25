@@ -6,18 +6,18 @@ import { Mongoose } from "mongoose";
 
 export let booking = async (req: Request, res: Response) => {
     console.log("body is====>", req.body);
-    let noRoom = parseInt(req.body.noOfRoom);
+    let noRoom = parseInt(req.body.noOFRoom);
     console.log("noof rommmmmm--type", noRoom, +"typeof Room No--->", typeof noRoom);
-    let hoteldata: any = await hotel.find({ _id: req.body.hotelID }, { hotelName: 1 });
+    let hoteldata: any = await hotel.findOne({ _id: req.body.hotelID }, { hotelName: 1 });
     console.log("hotellll Name---->", hoteldata, hoteldata.hotelName);
     try {
         const booking = new Booking({
-            HotelName: hoteldata[0].hotelName,
+            HotelName: hoteldata.hotelName,
             fromDate: req.body.fromDate,
             toDate: req.body.toDate,
             hotelID: req.body.hotelID,
             userID: req.body.userID,
-            noOfRoom: req.body.noOFRoom,
+            noOfRoom: noRoom,
             status: req.body.status,
             amount: req.body.amount
         });
@@ -30,10 +30,10 @@ export let booking = async (req: Request, res: Response) => {
 };
 export let draftBooking = async (req: Request, res: Response) => {
     console.log("body is====>", req.body);
-    let noRoom: any = parseInt(req.body.noOfRoom, 10);
+    let noRoom: any = parseInt(req.body.noOFRoom, 10);
     console.log("Romm rommmmmm-type-->", noRoom + "typeof Room No--->", typeof noRoom);
-    let hotelData: any = await hotel.find({ _id: req.body.hotelID });
-    console.log("hotellll Name---->", hotelData, hotelData[0].hotelName, hotelData.charge);
+    let hotelData: any = await hotel.findOne({ _id: req.body.hotelID });
+    console.log("hotellll Name---->", hotelData, hotelData.hotelName, hotelData.charge);
     console.log("date.........>", new Date(), typeof new Date());
     console.log("date.........>", Date.now(), typeof Date.now());
 
@@ -42,12 +42,12 @@ export let draftBooking = async (req: Request, res: Response) => {
         // const res: any = hotelData[0].hotelName;
         // console.log("hotel name is", res);
         const cancelBooking = new Booking({
-            fromDate: req.body.fromDate,
-            toDate: req.body.toDate,
+            fromDate: req.body.fromDate ? req.body.fromDate : new Date(),
+            toDate: req.body.toDate ? req.body.toDate : new Date(),
             hotelID: req.body.hotelID,
-            HotelName: hotelData[0].hotelName,
+            HotelName: hotelData.hotelName,
             userID: req.body.userID,
-            noOfRoom: req.body.noOFRoom,
+            noOfRoom: noRoom,
             status: req.body.status,
             amount: req.body.amount
         });

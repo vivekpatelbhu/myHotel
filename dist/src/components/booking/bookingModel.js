@@ -11,11 +11,9 @@ const bookingSchema = new mongoose_1.default.Schema({
     },
     fromDate: {
         type: String,
-        default: new Date()
     },
     toDate: {
         type: String,
-        default: new Date()
     },
     hotelID: {
         type: String,
@@ -25,7 +23,7 @@ const bookingSchema = new mongoose_1.default.Schema({
         required: true
     },
     noOfRoom: {
-        type: String
+        type: Number
     },
     amount: {
         type: Number,
@@ -34,6 +32,10 @@ const bookingSchema = new mongoose_1.default.Schema({
     status: {
         type: Boolean,
     },
+    Date: {
+        type: Date,
+        default: Date.now()
+    }
 }, { timestamps: true });
 exports.default = mongoose_1.default.model('booking', bookingSchema);
 //# sourceMappingURL=bookingModel.js.map
